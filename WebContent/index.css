@@ -1,0 +1,20 @@
+@CHARSET "UTF-8";
+.none {
+	display: none;
+}
+
+/* #board_submit{
+	margin-right:300px
+} */
+
+#board_submit{
+	color : #6B4700;
+	background: #ffffff ;
+	border: none;
+}
+
+#board_submit:hover{
+	color : #ffffff;
+	background: #6B4700;
+	border: none;
+}

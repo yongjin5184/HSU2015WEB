@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="ko" class="wf-nanumgothic-n4-active wf-active"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- META DATA -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    
+    <meta name="description" content="한성대학교 공과 대학 커뮤니티 입니다. : hansung">
+    <title>Hansung</title>
+                                   
+    <!-- STYLESHEETS -->
+    <link rel="stylesheet" href="./hansung_files/bootstrap.css" type="text/css">
+    
+    <!-- GOOGLE WEB FONTS -->
+    <link href="./hansung_files/css" rel="stylesheet" type="text/css">
+      <link rel="stylesheet" href="./index.css"/>
+    <!-- 한글 나눔고딕 -->
+    <script type="text/javascript" src="./hansung_files/jquery.js"></script>
+    <script async="" src="./hansung_files/analytics.js"></script><script src="./hansung_files/jsapi"></script>
+    <script>
+    $(document).ready(function(){
+    	
+        $("#div_multi").on('click',function(){
+            console.log("클릭클릭!");
+            $(".portfolio-item-details").show('3000');
+            var jsonObj = "test";
+            $.ajax({
+                type : 'post',
+                data : jsonObj,
+                url : "./database",
+                dataType : 'json', 
+                contentType : "application/x-www-form-urlencoded; charset=utf-8",
+                success : function(data) {
+                    console.log("성공입니다.!!!");
+                    var ele = "";
+                    console.log(JSON.stringify(data));
+                    for(var i = 0; i < data.length; i++){
+                    	ele += "<tr>" +
+				                    "<td>" + data[i].postNo + "</td>" +
+				                    "<td>" + data[i].mbName + "</td>" +
+				                    "<td>" + data[i].postCollege + "</td>" +
+				                    "<td>" + data[i].postSubject + "</td>" +
+				                    "<td>" + data[i].postDate + "</td>" +
+				                    "<td>" + data[i].postHit +"</td>" +
+				                    "<td class='note_detail_title_open'>" + "▼" + "</td>" +
+		                    	"</tr>" +
+								"<tr class='note_detail_contents none'>" +
+									"<td colspan='7'>" + data[i].postContent +  "</td>" +
+								"</tr>";
+                    }
+                    $("#table_board").children('tbody').html(ele);
+                    $(".note_detail_title_open").on('click', function() {
+        	     		console.log("asdf");
+        	     		var $myDivContents = $(this).parent();
+        	     		var $myNextDivContents = $(this).parent().next();
+						
+        	     		if($myNextDivContents.hasClass("none") == true) {
+        	     			$(this).text("▲");
+        	     			$myNextDivContents.removeClass("none");
+        	     		} else {
+        	     			$(this).text("▼");
+        	     			$myNextDivContents.addClass("none");
+        	     		}
+        	     	});
+                },
+                error : function(data) {
+                    console.log("가입에 실패하였습니다.");
+                }
+            });
+            
+        });
+       // $("#hanguru").on('click')
+        $("#img-close-portfolio").on('click', function(){
+            $(".portfolio-item-details").hide('3000');
+        });
+        $("#img-write-portfolio").on('click', function(){
+        	console.log("글쓰기");
+        	$('#main-menu > li > a').eq(3).trigger('click');
+        });
+        $(".top_img").on('click', function(){
+            console.log("asdf");
+            $('#main-menu > li > a').eq(1).trigger('click');
+        });
+        $("#board_submit").on('click', function(){
+        	console.log("asdf");
+        	var $boardName = $("#board_name").val();
+        	var $boardMajor = $("#board_major").val();
+        	var $boardTitle = $("#board_title").val();
+        	var $boardContent = $("textarea#board_content").val();
+        	console.log($boardName);
+        	console.log($boardMajor);
+        	console.log($boardTitle);
+        	console.log($boardContent);
+        	var jsonObj = {
+    				"boardName" : $boardName,
+    				"boardMajor" : $boardMajor,
+    				"boardTitle" : $boardTitle,
+    				"boardContent": $boardContent
+    		};
+        	console.log(JSON.stringify(jsonObj));
+        	$.ajax({
+				type : 'post',
+				data : {
+					jsonText : JSON.stringify(jsonObj)
+				},
+				url : './insert',
+				dataType : 'text', 
+				success : function(data) {
+					alert("글이 등록 되었습니다.");
+					$("#div_multi").trigger("click");
+					$('#main-menu > li > a').eq(1).trigger('click');
+				},
+				error : function(data) {
+					alert("글 등록이 안되었습니다.");
+				}
+			});
+        });
+    });
+
+     google.load( "webfont", "1" );
+     google.setOnLoadCallback(function() {
+      WebFont.load({ custom: {
+       families: [ "Nanum Gothic" ],
+       urls: [ "http://fonts.googleapis.com/earlyaccess/nanumgothic.css" ]
+      }});
+     });
+    </script><script src="./hansung_files/webfont.js" type="text/javascript"></script>
+      
+    <style>      
+        body {font-family: "Nanum Gothic", sans-serif;}
+         
+        #page-welcome { 
+            background: url('./hansung_files/hansung_engin.jpg') no-repeat center;
+            background-size: cover;
+        } 
+ 
+ 		#page-about{
+ 			background: url('./hansung_files/write_background.jpg') no-repeat center;
+ 			background-size: cover;
+ 			opacity: 0.7;
+ 		}
+ 		
+ 		#page-features{
+ 			background: url('./hansung_files/engineering_2.jpg') no-repeat center;
+ 			background-size: cover;
+ 			opacity: 0.8;
+ 		}
+ 		
+    </style><link rel="stylesheet" href="http://fonts.googleapis.com/earlyaccess/nanumgothic.css">
+</head>
+<body>
+    <!-- NAVIGATION -->
+    <nav class="fixed-top" id="navigation" style="top: -55px; opacity: 0;">
+        <div class="container">
+            <div class="row-fluid">
+                <div class="span12 center">
+                    <!-- LOGO -->
+                    <a class="brand pull-left" href="./hansung_community.html">
+                        <img src="./hansung_files/logo.png" alt="Hansung">
+                    </a>
+                    <!-- END LOGO -->
+
+                    <!-- MOBILE MENU BUTTON -->
+                    <div class="mobile-menu" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </div>
+                    <!-- END MOBILE MENU BUTTON -->
+                    
+                    <!-- MAIN MENU -->
+                    <ul id="main-menu" class="nav-collapse collapse">
+                        <li class="active"><a href="#page-welcome">Home</a></li>
+                        <li class=""><a href="#page-work">College Of Engineering</a></li>
+                        <li class=""><a href="#page-features">Values</a></li>
+                        <li class=""><a href="#page-about">Write</a></li>
+                        <li class=""><a href="#page-contact">Contact</a></li>
+                    </ul>
+                    <!-- END MAIN MENU -->
+                    
+                    <!-- SOCIAL ICONS -->
+                    <div class="social-icons hover-big pull-right">
+                        <a href="https://www.facebook.com/HansungUniv" class="sicon-facebook"><img src="./hansung_files/facebook.png" border="0"></a>
+                        <a href="https://www.youtube.com/watch?v=c5SYXWql9uI" class="sicon-youtube"><img src="./hansung_files/youtube.png" border="0"></a>                        
+                    </div>
+                    <!-- END SOCIAL ICONS -->
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- END NAVIGATION -->
+    
+    <!-- PAGE | WELCOME -->
+    <div class="pages white paralax page-welcome" id="page-welcome" style="background-position: 0% 0px;">
+        <div class="overlay"></div>
+        <!-- Centralized content -->
+        <div class="centralized" style="margin-top: -215.5px; margin-left: -380px; visibility: visible; opacity: 1;">
+            <div class="container">
+                <div class="row-fluid">
+                    <div class="span12 center">
+                        <!-- Animated logo -->
+                        <div class="logo">
+                            <div class="scrollNormal">
+                                <img src="./hansung_files/logo_welcome.png" width="140" height="140" alt="Hansung" class="top_img">
+                            </div>
+                            <div class="scrollDown">
+                                <img src="./hansung_files/logo2_welcome.png" width="140" height="140" alt="Hansung" class="top_img">
+                            </div> 
+                        </div>
+                        
+                        <div class="line-divider" id="welcome-messages">
+                            <div class="bx-wrapper" style="max-width: 100%; margin: 0px auto;"><div class="bx-viewport" style="width: 100%; overflow: hidden; position: relative; height: 82px;"><ul class="slides" style="width: auto; position: relative; top: -82px;"><li style="float: none; list-style: none; position: relative; width: 760px;" class="bx-clone">
+                                    <h1>무한 상상의 중심</h1>
+                                </li>
+                                <li style="float: none; list-style: none; position: relative; width: 760px;">
+                                    <h1>진리·지선을 갖춘</h1>
+                                </li>
+                                <li style="float: none; list-style: none; position: relative; width: 760px;">
+                                    <h1>창의·스마트한</h1>
+                                </li>
+                                <li style="float: none; list-style: none; position: relative; width: 760px;">
+                                    <h1>공대 커뮤니티</h1>
+                                </li>
+                            <li style="float: none; list-style: none; position: relative; width: 760px;" class="bx-clone">
+                                    <h1>" 한성공대모여! "</h1>
+                                </li></ul></div></div>
+                        </div>
+                        <p>Hansung Univ Enginnering Community</p>
+                        <div class="social-icons sicon-white bordered">
+                            <a href="https://www.facebook.com/HansungUniv" class="sicon-facebook"><img src="./hansung_files/facebook.png" border="0"></a>
+                            <a href="https://www.youtube.com/watch?v=c5SYXWql9uI" class="sicon-youtube"><img src="./hansung_files/youtube.png" border="0"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END PAGE | Welcome -->
+   
+    <!-- PAGE | WORK -->
+    <div class="pages page-work" id="page-work">
+        <div class="container">
+            <!-- Header -->
+            <header>
+                <h4 class="line-divider">College Of Engineering</h4>
+                <h2>한성대학교 공과대학을 소개합니다.</h2>
+                <!-- Short desciption about Work in general -->
+                <div class="row">
+                    <div class="span8 offset2">
+                        <p>
+                            공과대학은 멀티미디어,컴퓨터,정보통신,정보시스템,산업경영,기계시스템 등 첨단 IT 관련 6개학과가 개설되어 운영되고 있습니다. 
+                        </p>
+                    </div>
+                </div>
+                    
+                <!-- Sub menu -->
+                <!-- 
+                Params: 
+                    plugin-filter: Defines links for filtering.
+                -->
+                <nav class="submenu">
+                    <ul>
+                        <li>
+                            <a href="" class="plugin-filter active" data-filter="all">all</a>
+                        </li>
+                        <li>
+                            <a href="" class="plugin-filter" data-filter="Computer_Media">Computer & Media</a>
+                        </li>
+                        <li>
+                            <a href="" class="plugin-filter" data-filter="Information">Information</a>
+                        </li>
+                        <li>
+                            <a href="" class="plugin-filter" data-filter="Industrial_Management">Industrial & Management</a>
+                        </li>	
+                        <li>
+                            <a href="" class="plugin-filter" data-filter="Mechanical">Mechanical</a>
+                        </li>
+                    </ul>
+                </nav>
+            </header>
+            <!-- End Header -->
+                
+            <!-- Article -->
+            <article>
+                <!-- Portfolio items
+                    Params: 
+                        plugin-filter-elements: Defines items for filtering, each item has class which defines filter value.
+                        portfolio-items: Customise portfolio items for hover effect.
+                -->
+                <section class="portfolio-item-details" style="display: none;">
+                    <div class="row-fluid">
+                        
+                        <div class="close-portfolio" >
+                            <img src="./hansung_files/x.png" alt="close" id="img-close-portfolio">
+                        <div class="clearfix"></div>
+                        <table class="table table-hover" id="table_board">
+                            <thead>
+                              <tr>
+                                <th>글번호</th>
+                                <th>글쓴이</th>
+                                <th>대학</th>
+                                <th>제목</th>
+                          		<th>날짜</th>
+                                <th>조회수</th>
+                                <th>글보기</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              
+                            </tbody>
+                          </table>
+                          <div class="insert-portfolio" >
+                            <img src="./hansung_files/write.png" id="img-write-portfolio">
+                            </div>
+                          </div>
+                    </div>
+                </section>
+                <ul class="thumbnails plugin-filter-elements portfolio-items">
+                    <li class="span4 mix Computer_Media mix_all" style="display: inline-block; opacity: 1;">
+                        <a href="#" onClick="return false;" data-destination="portfolio-items" data-insert="before">
+                            <!-- Portfolio image -->
+                            <img src="./hansung_files/visual01.png" alt="멀티미디어공학과" class="img-rounded">
+                            
+                            <!-- Portfolio name, activated on hover -->
+                            <div class="portfolio-overlay" id="div_multi">
+                                <h4>오디오, 이미지, 비디오 등 복합 매체를 다룰 있는 인재를 양성합니다.</h4>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="span4 mix Computer_Media mix_all" style="display: inline-block; opacity: 1;">
+                        <a href="" data-destination="portfolio-items" data-insert="before">
+                            <!-- Portfolio image -->
+                            <img src="./hansung_files/visual02.png" alt="컴퓨터공학과" class="img-rounded">
+                            
+                            <!-- Portfolio name, activated on hover -->
+                            <div class="portfolio-overlay">
+                                <h4>컴퓨터 시스템의 핵심기술을 이해하는 인재를 양성합니다.</h4>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="span4 mix Information mix_all" style="display: inline-block; opacity: 1;">
+                        <a href="" data-destination="portfolio-items" data-insert="before">
+                            <img src="./hansung_files/visual03.png" alt="정보통신공학과" class="img-rounded">
+                            <div class="portfolio-overlay">
+                                <h4>무선 통신을 기반으로 하는 정보통신기술 분야의 핵심 인재를 양성합니다.</h4>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="span4 mix Information mix_all" style="display: inline-block; opacity: 1;">
+                        <a href="" data-destination="portfolio-items" data-insert="before">
+                            <img src="./hansung_files/visual04.png" alt="정보시스템공학과" class="img-rounded">
+                            <div class="portfolio-overlay">
+                                <h4>시스템 공학분야에 대한 창의적 설계능력을 가진 인재를 양성합니다.</h4>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="span4 mix Industrial_Management Industrial_Management mix_all" style="display: inline-block; opacity: 1;">
+                        <a href="" data-destination="portfolio-items" data-insert="before">
+                            <img src="./hansung_files/visual05.png" alt="산업경영학과" class="img-rounded">
+                            <div class="portfolio-overlay">
+                                <h4>공학기술과 경영마인드를 가진 인재를 양성합니다.</h4>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="span4 mix Mechanical mix_all" style="display: inline-block; opacity: 1;">
+                        <a href="" data-destination="portfolio-items" data-insert="before">
+                            <img src="./hansung_files/visual06.png" alt="기계공학과" class="img-rounded">
+                            <div class="portfolio-overlay">
+                                <h4>인간에 편리한 도구나 장치를 만들 수 있는 인재를 양성합니다.</h4>
+                            </div>
+                        </a>
+                    </li>                    
+                </ul>
+            </article>
+            <!-- End Article -->
+        </div>
+    </div>
+    <!-- END PAGE | WORK -->
+
+        
+    <!-- PAGE | FEATURES  -->
+    <div class="pages white paralax page-features" id="page-features" style="background-position: 0% 29px;">
+        <div class="overlay"></div>
+        <div class="container">
+             <!-- Header -->
+            <header>
+                <h4 class="line-divider">Values</h4>                
+                <h1>한성대학교 가치를 <br/>여기서 만나세요.</h1>
+                <div class="row">
+                    <div class="span8 offset2">
+                        <p>오늘도 한성대학교에서 만든 여러 소프트웨어들이 여러분에게 즐거움을 드릴 것 입니다.</p>
+                    </div>
+                </div>
+            </header>
+             <!-- End Header -->
+             
+             <!-- Article -->
+            <article>
+                <!-- Features blocks -->
+                <div class="row-fluid">
+                    <div class="span4 center">
+                        <img src="./hansung_files/han.png" alt="Treble">
+                        <h5>한성대학교 커뮤니티</h5>
+                        <p class="smallFontBy08 cutBy10" style="text-align:left">&nbsp&nbsp'한그루'는 한성대학교 학우들을 위한 한성대학교 학우들에 의한 '한성대인의 쉼터'라는 모토로 만들어진 소통공간입니다.<br><br> &nbsp&nbsp강의 및 학교 주변 정보를 편리하게 얻을 수 있습니다.</p>
+                    </div>
+                    <div class="span4 center">
+                        <img src="./hansung_files/TeachTouch.PNG" alt="Treble">
+                        <h5>반응형 웹앱 TeachTouch</h5>
+                        <p class="smallFontBy08 cutBy10" style="text-align:left">&nbsp&nbsp선생님과 학생이 Touch 인터페이스를 통해 수업외의 시간에도 자유롭게 소통할 수 있습니다. <br><br>&nbsp&nbsp스마트폰을 통해 전자칠판과 채팅을 간편하게 할 수 있고  수학 ·영어용 자판을 따로 구현함으로써 Touch를 통해 편리하게 질문하고 답변할 수있습니다.</p>
+                    </div>
+                    <div class="span4 center">
+                        <iframe width="220" height="150"src="//www.youtube.com/embed/faNfSF2TJuM?list=PL6g6z_CWAstNvVfKkoBr4QuZ6oBfnnxq4" frameborder="0" allowfullscreen=""></iframe>
+                        <h5>첨단 IT 기기를 이용한 교육 시스템</h5>
+                        <p class="smallFontBy08 cutBy10" style="text-align:left">&nbsp&nbsp스마트폰 및 태블릿, 웹사이트를 활용하여 선생님과 학생들이 지속적으로 상호작용 할 수 있도록 노력합니다.<br><br>&nbsp&nbsp다양한 IT 기기를 접목 시킬 수 있는 현 교실 속에서  IT를 이용헤 더 효과적으로 공부할 수 있는 새로운 모델을 끊임없이 연구 합니다.</p>
+                    </div>
+                </div>
+                <!-- Testemonials -->
+                <div class="row-fluid">
+                    <div class="span8 offset2">
+                        <div class="quote center">
+                            <div id="quote-slider" class="slide">
+                                <!-- Carousel items -->
+                                <div class="carousel-inner">
+                                    <div class="item">
+                                        산업체가 요구하는 현장 적응력과 창의성을 갖추고 국제적으로 인정받을 수 있는 엔지니어를 양성하기 위한 제도입니다.
+                                        <h5>교육공학인증제도</h5>
+                                    </div>
+                                    <div class="item active">
+                                        공과대학에서는 2015년 9월 22일 ~ 2015년 9월 23일 공학도들의 열정과 창의성을 담은 작품 및 연구 논문을 대상으로 한성 공학경진대회를 개최합니다.
+                                        <h5>제11회 공학경진대회 개최 안내</h5>
+                                    </div>
+                                    <div class="item">
+                                       취업 및 진학 인터뷰에 유용하게 활용될 수 있는 포트폴리오 작성 기회를 제공하는 목적의 포트폴리오 경진대회를 개최 합니다.
+                                        <h5>제8회 학생포트폴리오 경진대회 개최 안내</h5>
+                                    </div>
+                                </div>
+                                <!-- Carousel indicators -->
+                                <ol class="carousel-indicators">
+                                    <li data-target="#quote-slider" data-slide-to="0" class=""></li>
+                                    <li data-target="#quote-slider" data-slide-to="1" class="active"></li>
+                                    <li data-target="#quote-slider" data-slide-to="2" class=""></li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+            <!-- End Article -->
+        </div>
+    </div>
+    <!-- END PAGE | FEATURES -->
+
+    <!-- PAGE | ABOUT -->
+    <div class="pages page-about" id="page-about" >
+        <div class="container">
+            <!-- Header -->
+            <header>
+                <h4 class="line-divider" style="color:black">Write</h4>
+                <div style="border:3px solid black; padding:20px; border-radius: 25px;" >
+                <h3>글을 올려 주세요</h3>
+                <br/>
+
+					<form class="form-inline">
+						<div class="form-group">
+							<label for="exampleInputName2">이름 : </label> <input type="text"
+								class="form-control" id="board_name" placeholder="홍길동">
+						</div><br/>
+						<div class="form-group">
+							<label for="exampleInputName2">학과 : </label> <input type="text"
+								class="form-control" id="board_major" placeholder="단과대 명 ">
+						</div>
+						<br />
+						<div class="form-group form-group-lg">
+							<label for="exampleInputName2">제목 : </label> <input type="text"
+								class="form-control" id="board_title" placeholder="제목">
+						</div>
+						<br />
+						<div class="form-group">
+							<label for="exampleInputName2">본문 : </label>
+							<textarea class="form-control" rows="6" cols="500" style="width:280px"
+								id="board_content"></textarea>
+							<br />
+						</div>
+						<br />
+
+						<button type="button" class="btn btn-default" id="board_submit"
+							style="float: center">작성</button>
+					</form>
+				</div>
+				
+			</header>
+			<div>
+				
+			</div>
+			<!-- End Header -->
+        </div>
+    </div>
+    <!-- END PAGE | ABOUT -->
+    
+    <!-- PAGE | CONTACT -->
+    <div class="pages black-bg white page-contact" id="page-contact">
+        <div class="container">
+            <!-- Header -->
+            <header>
+                <h4 class="line-divider">Contact</h4>
+                <div class="row">
+                    <div class="span8 offset2">
+                        <p>
+                             한성인의 소리에 귀를 기울이고 있습니다. 한성인에게 도움이 되는 서비스가 있으시면 언제든지 연락주시기 바랍니다.
+                        </p>
+                    </div>
+                </div>
+            </header>
+            <!-- End Header -->
+            
+            <!-- Start Article -->
+            <article>
+                <div class="row-fluid">
+                    <!-- Contact form -->
+                    <div class="span6">
+                        <h5>연락처</h5>
+                        <div class="media">
+                            <div class="social-icons sicon-white pull-left">
+                                <a href="" class="sicon-place"><i>Location</i></a>
+                            </div> 
+                            <div class="media-body smallFontBy08">
+                                대한민국, 서울시
+                            </div>
+                        </div>
+                        <div class="media">
+                            <div class="social-icons sicon-white pull-left">
+                                <a href="" class="sicon-mail"><i>email</i></a>
+                            </div> 
+                            <div class="media-body smallFontBy08">
+                                <a href="mailto:yongjin5184@gmail.com">yongjin5184@gmail.com</a>
+                            </div>
+                        </div>
+                        <div class="media">
+                            <div class="social-icons sicon-white pull-left">
+                                <a href="" class="sicon-clock"><i>Time zone</i></a>
+                            </div> 
+                            <div class="media-body smallFontBy08">
+                                UTC / GMT +9
+                            </div>
+                        </div>
+
+                        <h5>지원 언어</h5>                        
+                        <div>
+                            <a href="">Korean</a> 
+                        </div> 
+                    </div>
+                    <!-- End Contact form -->
+                    <!-- Contact information -->
+                    <div class="span5 offset1">
+                        <h5>Get social</h5>
+                        <div class="social-icons sicon-white bordered">
+                            <a href="https://www.facebook.com/HansungUniv" class="sicon-facebook"><img src="./hansung_files/facebook.png" border="0"></a>
+                            <a href="https://www.youtube.com/watch?v=c5SYXWql9uI" class="sicon-youtube"><img src="./hansung_files/youtube.png" border="0"></a>
+                        </div>
+                        
+                        <h5>WebSite Credit</h5>                        
+                        <div>
+                            icons : The Noun Project  
+                        </div>                        
+                        
+                    </div>
+                    <!-- End Contact information -->
+                </div>
+            </article>
+            <!-- End Article -->
+            
+        </div>
+        
+    </div>
+    <!-- END PAGE | CONTACT -->
+    
+    
+    <!-- JQUERY -->
+    <!--<script src="./hansung_files/jquery-1.10.2.min.js" type="text/javascript"></script>-->
+    
+    
+    <!-- TWITTER BOOTSTRAP -->
+    <script src="./hansung_files/bootstrap.min.js" type="text/javascript"></script>
+    <!--[if lt IE 9]>
+        <script src="assets/js/bootstrap/html5shiv.js"></script>
+    <![endif]-->
+    
+    
+    <!-- PLUGINS -->
+    <script src="./hansung_files/jquery.bxslider.min.js" type="text/javascript"></script>
+    <script src="./hansung_files/jquery.centralized.min.js" type="text/javascript"></script>
+    <script src="./hansung_files/jquery.fixedonlater.min.js" type="text/javascript"></script>
+    <script src="./hansung_files/jquery.hashloader.min.js" type="text/javascript"></script>
+    <script src="./hansung_files/jquery.mixitup.min.js" type="text/javascript"></script>
+    <script src="./hansung_files/jquery.nav.min.js" type="text/javascript"></script>
+    <script src="./hansung_files/jquery.parallax-1.1.3.min.js" type="text/javascript"></script>
+    <script src="./hansung_files/jquery.responsivevideos.min.js" type="text/javascript"></script>
+    <script src="./hansung_files/jquery.scrollTo.min.js" type="text/javascript"></script>
+        
+    
+    <!-- INITIALIZE -->
+    <script src="./hansung_files/application.min.js" type="text/javascript"></script>
+    
+    
+    <!-- GOOGLE ANALYTICS -->
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-29163364-1', 'Hansung.ac.kr');
+      ga('send', 'pageview');
+
+    </script>
+
+
+</body></html>
